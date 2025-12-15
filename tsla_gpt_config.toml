@@ -1,0 +1,79 @@
+[chat]
+model = "gemini-2.5-pro-exp-03-25"
+end_point = "https://api.nuwaapi.com/v1/chat/completions"
+api_base = "https://api.nuwaapi.com/v1/chat/completions"
+system_message = "You are a financial analyst specializing in Tesla (TSLA) stock analysis. You have deep knowledge of the automotive industry, electric vehicles, renewable energy, and related sectors. Your analysis should be data-driven, considering both technical and fundamental factors. You should maintain a professional tone and provide well-reasoned insights."
+tokenization_model_name = "gemini-2.5-pro-exp-03-25"
+
+[agent.agent_1]
+embedding = { detail = { embedding_model = "text-embedding-3-large", api_base = "https://api.nuwaapi.com/v1/embeddings", chunk_size = 5000, verbose = false } }
+chat = { detail = { model = "gemini-2.5-pro-exp-03-25", api_base = "https://api.nuwaapi.com/v1/chat/completions" } }
+
+[general]
+top_k = 7
+trading_symbol = "TSLA"
+agent_name = "agent_tsla"
+look_back_window_size = 21
+memory_layer = "short"
+character_string = '''
+You accumuate a lot of informaion of the following sectors so you are especially good at trading them:
+(1)Electric Vehicles (Automotive Sector).
+(2) Energy Generation and Storage.
+(3) Autonomous Driving and AI Technology.
+(4) Battery Production and Development.
+(5) Software and Services.
+(6) Information Technology.
+
+You are an expert of TSLA.
+From August 2023 to December 2024, Tesla's continued growth and solid financial performance over the defined period, despite certain quarters where revenue missed Wall Street expectations.
+'''
+
+
+[embedding]
+embedding_model = "text-embedding-3-large"
+chunk_size = 2000
+verbose = false
+api_base = "https://api.nuwaapi.com/v1/embeddings"
+end_point = "https://api.nuwaapi.com/v1/embeddings"
+
+
+[short]
+importance_score_initialization = "sample"
+recency_score_initialization = "linear"
+decay_params = {recency_factor = 7.0, importance_factor = 0.97}
+clean_up_threshold_dict = {recency_threshold = 0.02, importance_threshold = 8}
+jump_threshold_lower = 40
+jump_threshold_upper = 60
+compound_score_calculation = {recency_weight=0.3, importance_weight=0.7}
+max_memory_size = 10000
+batch_size = 1000
+
+[mid]
+jump_threshold_lower = 60
+jump_threshold_upper = 80 
+importance_score_initialization = "sample"
+decay_params = {recency_factor = 150.0, importance_factor = 0.98}
+clean_up_threshold_dict = {recency_threshold = 0.02, importance_threshold = 8}
+compound_score_calculation = {recency_weight=0.3, importance_weight=0.7}
+max_memory_size = 10000
+batch_size = 1000
+
+[long]
+jump_threshold_lower = 80
+jump_threshold_upper = 100
+importance_score_initialization = "sample"
+decay_params = {recency_factor = 500.0, importance_factor = 0.995}
+clean_up_threshold_dict = {recency_threshold = 0.02, importance_threshold = 8}
+compound_score_calculation = {recency_weight=0.3, importance_weight=0.7}
+max_memory_size = 10000
+batch_size = 1000
+
+[reflection]
+importance_score_initialization = "sample"
+decay_params = {recency_factor = 500.0, importance_factor = 0.995}
+clean_up_threshold_dict = {recency_threshold = 0.02, importance_threshold = 8}
+compound_score_calculation = {recency_weight=0.3, importance_weight=0.7}
+max_memory_size = 10000
+batch_size = 1000
+jump_threshold_lower = 80
+jump_threshold_upper = 100
